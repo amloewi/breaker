@@ -1,9 +1,11 @@
-import rumps
+# import rumps
+import os
+import sys
 import keyboard
 import pygame
 # from waves import minigame
 # from pynput import keyboard
-rumps.debug_mode(True)
+# rumps.debug_mode(True)
 
 # pyinstaller Breaker.py --windowed --onefile # This works! Onefile shrinks size (???)
 # This call => 'UPX is available,' but the file was no smaller than above;
@@ -30,6 +32,9 @@ background_color = pygame.Color(0,0,0) # or 'black'
 freq = 2
 amplitude = 90
 speed = .25
+
+BREAKER = pygame.USEREVENT + 1
+
 
 def pearson(series_1, series_2):
     # Takes in a list of pairwise ratings and produces a pearson similarity
@@ -69,18 +74,30 @@ def any_key_to_continue(text, screen, surface, font):
             break
 
 
+def set_flag():
+    """Puts an event in the pygame events queue to start the minigame
+    """
+    my_event = pygame.event.Event(BREAKER, message="Breathe in...")
+    pygame.event.post(my_event)
+    print('posted!')
+
+
 def minigame():
+    """
 
-#    print('hello!')
-#    return
-#    pygame.init()
-#    return
-#    pygame.init()
+    Does NOT initialize the game;
+    """
 
-    # pygame.init()
+    # Need to PUT IT AT THE FRONT OF THE STACK
+    # (is this necessary, HERE? It's already outside of the function)
+    os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (0, 0) # ... finding SCREEN width etc.
     # screen = pygame.display.set_mode((canvas_width, canvas_height))
     # surface = pygame.Surface((canvas_width, canvas_width))
-    # font = pygame.font.SysFont('Helvetica', 30)
+
+    # pygame.FULLSCREEN APPEARS TO SOLVE THE PROBLEM OF FOCUS;
+    # when I trigger this, it just -- fills the screen! automatic!
+    screen = pygame.display.set_mode((canvas_width, canvas_height), pygame.FULLSCREEN)
+    surface = pygame.Surface((1000, 400), pygame.FULLSCREEN)
 
     for game_number in range(1, 4): # In case there's a bug, quit after 3 rounds
 
@@ -98,7 +115,7 @@ def minigame():
             for i in range(canvas_height):
                 surface.set_at((int(canvas_width/2), i), white)
 
-            if time.time() > start + 31: # 5 half-periods; start+end down
+            if time.time() > start + 3:#1:  # 5 half-periods; start+end down
                 break
 
             events = pygame.event.get()
@@ -128,9 +145,6 @@ def minigame():
 
                 surface.set_at((x, y), sin_color) # sets a single pixel
 
-            # And HERE, I print the correlation between
-            # pressed and derivative
-            # cor = round(corrcoef(pressed, derivatives)[0, 1], 2)
             cor = pearson(pressed, derivatives)
 
             screen.blit(surface, (0, 0)) # render surface on canvas
@@ -148,38 +162,31 @@ def minigame():
     any_key_to_continue("Ok.", screen, surface, font)
     any_key_to_continue("Ready?", screen, surface, font)
     any_key_to_continue("Get to it.", screen, surface, font)
+
+    screen = pygame.display.set_mode((1, 1))
+    surface = pygame.Surface((1, 1))
     # return
-    pygame.display.quit()
-
-
-
-class AwesomeStatusBarApp(rumps.App):
-    @rumps.clicked("Play")
-    def mg(self, callback=minigame, key='y'):
-        #minigame()
-        print('triggered!') # THIS works -- callbacks, no.
-	# Except that QUIT works -- what does THAT look like?
+    # pygame.display.quit()
 
 
 if __name__ == "__main__":
 
+    keyboard.add_hotkey('windows+y', set_flag) #lambda:print('hello!')) #set_flag)
 
-    # Looks like maybe this is getting blocked -- the dropdown works though.
-    # add an event to the pygame events -- but there has to be a LOOP going ALREADY no?
-    keyboard.add_hotkey('windows+y', minigame)
-    # Maybe I could hotkey into the menu bar itself? Or into the object, somehow.
-    # Yup, THIS works fine -- how do I run this then?
-    # keyboard.add_hotkey('windows+y', rumps.alert, args=("I'm", "alive!"))
-
-    # Taking this outside removes the non-main thread error
+    # os.environ['SDL_VIDEO_CENTERED'] = '1' # didn't work; below DID (SORT of; only x-axis)
+    # OR COULD JUST MAKE IT FILL THE SCREEN, WHICH I WANT TO DO ANYWAY => (0, 0) is CORRECT
+    os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (0, 0) # ... finding SCREEN width etc.
+    # OR, call this at the beginning of the GAME, TOO?
     pygame.init()
-    # Taking these three outside STILL have the eventMaskMatching warning
-    # and, pygame doesn't respond to keypresses --
-    # is that the pygame.key.get_pressed() stuff?
-    screen = pygame.display.set_mode((canvas_width, canvas_height))
-    surface = pygame.Surface((canvas_width, canvas_width))
+    screen = pygame.display.set_mode((1, 1))
+    surface = pygame.Surface((1, 1))
     font = pygame.font.SysFont('Helvetica', 30)
 
-    app = AwesomeStatusBarApp("STOP").run()
-    #pygame.display.quit()
-    #pygame.quit()
+    while True:
+        events = pygame.event.get()
+        for event in events:
+            if event.type == pygame.QUIT:
+                sys.exit()
+            if event.type == BREAKER:
+                print('triggered!')
+                minigame()
