@@ -14,6 +14,14 @@ No matter what application is running, you're suddenly presented with a black sc
 
 And that's it!
 
+Here's an example of the line being on the **upwards** point of the curve, where you should NOT press anything
+
+![Up](static/up.png)
+
+And here's an example of the line being on the **downwards** part of the curve, where you SHOULD press the spacebar. When you are pressing down, the curve will turn red.
+
+![Down](static/down.png)
+
 If you don't do this well enough -- meaning, press space too much when the wave is moving up, or *don't* press space enough when the wave is moving down -- then you'll need to try again. The game exits either when you follow the wave closely enough, or automatically after three tries.
 
 ## Hotkeys and Setup
