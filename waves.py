@@ -62,23 +62,12 @@ def any_key_to_continue(text, screen, surface, font):
 
 def minigame():
 
-#    print('hello!')
-#    return
-#    pygame.init()
-#    return
     pygame.init()
-    # screen = pygame.display.set_mode((canvas_width, canvas_height))
-    # surface = pygame.Surface((canvas_width, canvas_width))
     font = pygame.font.SysFont('Helvetica', 30)
 
     # Need to PUT IT AT THE FRONT OF THE STACK
     # (is this necessary, HERE? It's already outside of the function)
     os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (0, 0) # ... finding SCREEN width etc.
-    # screen = pygame.display.set_mode((canvas_width, canvas_height))
-    # surface = pygame.Surface((canvas_width, canvas_width))
-
-    # pygame.FULLSCREEN APPEARS TO SOLVE THE PROBLEM OF FOCUS;
-    # when I trigger this, it just -- fills the screen! automatic!
     screen = pygame.display.set_mode((canvas_width, canvas_height), pygame.FULLSCREEN)
     surface = pygame.Surface((1000, 400), pygame.FULLSCREEN)
 
