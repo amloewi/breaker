@@ -17,6 +17,7 @@ And that's it!
 Here's an example of the line being on the **upwards** point of the curve, where you should NOT press anything
 
 ![Up](static/up.png){:height="200px" width="100px"}
+<img src="static/up.png" width="100px" height="50px">
 
 And here's an example of the line being on the **downwards** part of the curve, where you SHOULD press the spacebar. When you are pressing down, the curve will turn red.
 
