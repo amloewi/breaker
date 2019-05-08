@@ -46,7 +46,7 @@ Breaker requires `pygame` to run, but no other libraries that don't come automat
 
 ## Making Actual Software
 
-
+It would obviously be so much better if it wasn't necessary to use Automator, but I don't know how to do Cocoa/Mac development, and haven't been able to package the current code using `pyinstaller` etc. The next major step for this project is to figure out how to turn it into a normal Mac app that could run in the menu bar, and be easily and self-containedly installed by people who don't know how to code. If you'd like to push things in that direction, let's talk!
 
 
 ## The Philosophy
