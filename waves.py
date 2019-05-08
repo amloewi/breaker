@@ -1,6 +1,7 @@
 #!/anaconda3/bin/python
 
 # WHAT SHOULD MY SHEBANG LINE LOOK LIKE?
+import os
 import pygame
 import time
 import math
@@ -66,9 +67,20 @@ def minigame():
 #    pygame.init()
 #    return
     pygame.init()
-    screen = pygame.display.set_mode((canvas_width, canvas_height))
-    surface = pygame.Surface((canvas_width, canvas_width))
+    # screen = pygame.display.set_mode((canvas_width, canvas_height))
+    # surface = pygame.Surface((canvas_width, canvas_width))
     font = pygame.font.SysFont('Helvetica', 30)
+
+    # Need to PUT IT AT THE FRONT OF THE STACK
+    # (is this necessary, HERE? It's already outside of the function)
+    os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (0, 0) # ... finding SCREEN width etc.
+    # screen = pygame.display.set_mode((canvas_width, canvas_height))
+    # surface = pygame.Surface((canvas_width, canvas_width))
+
+    # pygame.FULLSCREEN APPEARS TO SOLVE THE PROBLEM OF FOCUS;
+    # when I trigger this, it just -- fills the screen! automatic!
+    screen = pygame.display.set_mode((canvas_width, canvas_height), pygame.FULLSCREEN)
+    surface = pygame.Surface((1000, 400), pygame.FULLSCREEN)
 
     for game_number in range(1, 4): # In case there's a bug, quit after 3 rounds
 

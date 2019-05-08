@@ -38,7 +38,7 @@ import random
 from math import sqrt
 
 
-canvas_width=1000 #308
+canvas_width=1000 #308 # How to make it full screen?
 canvas_height=400
 
 sin_color = pygame.Color(255,0,0) # or nothing
